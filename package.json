@@ -1,4 +1,5 @@
 {
+  "homepage": "http://webdogie.github.io/DOM_dogie_platzi/public",
   "scripts": {
     "start": "snowpack dev",
     "build": "snowpack build",
