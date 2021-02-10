@@ -1,28 +1,15 @@
-name: Deploy to GitHub Pages
+name: Trigger Netlify Build
 
 on:
-  push:
-    branches:
-      - master
-      - main
+  schedule:
+    # You can use https://crontab.guru to generate the
+    # desired cron sheduled :)
+    - cron: "0 10 * * 1" # At 10:00 on Monday.
 
 jobs:
-  build-deploy:
+  build:
+    name: Request Netlify Webhook
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Setup Node
-        uses: actions/setup-node@v1
-        with:
-          node-version: "14.x"
-
-      - run: npm install
-
-      - run: npm run build
-
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build
+      - name: Ping
+        run: curl -X POST -d {} https://api.netlify.com/build_hooks/601b6158a8a0276cdf660e5a
