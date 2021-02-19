@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <link href="https://rickandmortyapi.com" rel="dns-prefecth preconnect" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
@@ -23,9 +24,7 @@
     <title>Workshop 1: Fetch | Curso Manipulación DOM | Platzi</title>
   </head>
   <body>
-    <div
-      class="py-10 max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 bg-gray-900"
-    >
+    <div class="py-10 mx-auto px-4 sm:px-6 lg:px-8 bg-gray-900">
       <div class="text-center">
         <p
           class="text-base leading-6 text-indigo-300 font-semibold tracking-wide uppercase"
@@ -40,17 +39,29 @@
         <p class="mt-4 max-w-2xl text-xl leading-7 text-gray-400 mx-auto">
           Welcome to Hum4n, La Tiendita, pásele and buy deliciosos humans.
         </p>
+
+        <div
+          id="js-modal-mount"
+          class="flex flex-col justify-center items-center fixed z-10"
+        ></div>
+
+        <div
+          id="overlay"
+          class="bg-black bg-opacity-50 fixed inset-0 pointer-events-none active:pointer-events-auto hidden"
+        ></div>
+
         <div
           id="js-mount"
           class="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 md:gap-7"
         ></div>
       </div>
     </div>
+
     <footer class="text-center p-6 text-sm text-gray-100 bg-gray-700">
       <p>
         Powered by
         <a href="https://rickandmortyapi.com/" target="_blank"
-          >rickandmortyapi.com/</a
+          >rickandmortyapi.com</a
         >
         | Made by <a href="https://twitter.com/jonalvarezz">@jonalvarezz</a> and
         <a href="https://twitter.com/webdogie">@webdogie</a> in
@@ -59,6 +70,6 @@
     </footer>
 
     <!-- Add more scripts here -->
-    <script type="module" src="%PUBLIC_URL%/_dist_/index.js"></script>
+    <script async type="module" src="%PUBLIC_URL%/_dist_/index.js"></script>
   </body>
 </html>

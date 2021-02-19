@@ -918,6 +918,11 @@
     "is-core-module" "^2.1.0"
     "path-parse" "^1.0.6"
 
+"rickmortyapi@^0.3.0":
+  "integrity" "sha512-e+r8qxl3ri/SaY+PMTVS5/AG6hjgFENN8GW/R9yuEXF3jfjXRqsu8oHBaPSJ4KziEp+vbalA9WCvua0T4AE7eg=="
+  "resolved" "https://registry.npmjs.org/rickmortyapi/-/rickmortyapi-0.3.0.tgz"
+  "version" "0.3.0"
+
 "rollup@^2.34.0":
   "integrity" "sha512-mvtQLqu3cNeoctS+kZ09iOPxrc1P1/Bt1z15enuQ5feyKOdM3MJAVFjjsygurDpSWn530xB4AlA83TWIzRstXA=="
   "resolved" "https://registry.npmjs.org/rollup/-/rollup-2.34.2.tgz"

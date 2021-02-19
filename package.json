@@ -12,5 +12,8 @@
     "pretty-quick": "^3.1.0",
     "snowpack": "^3.0.11",
     "tailwindcss": "^2.0.2"
+  },
+  "dependencies": {
+    "rickmortyapi": "^0.3.0"
   }
 }
