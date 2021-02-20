@@ -8,21 +8,21 @@ async function charFecth(url) {
   return characters;
 }
 
+let cardCounter = 0;
+const overlay = document.querySelector('#overlay');
+const toggleModal = (card, overlay) => {
+  //TOGGLE MODAL CARD
+  card.classList.toggle('hidden');
+  card.classList.toggle('flex');
+  //TOGGLE OVERLAY
+  overlay.classList.toggle('hidden');
+  overlay.classList.toggle('flex');
+};
+
 async function buildGrid() {
   charFecth(baseUrl)
     // GENERATE CARDS AND MODAL
     .then((characters) => {
-      let cardCounter = 0;
-      const overlay = document.querySelector('#overlay');
-      const toggleModal = (card, overlay) => {
-        //TOGGLE MODAL CARD
-        card.classList.toggle('hidden');
-        card.classList.toggle('flex');
-        //TOGGLE OVERLAY
-        overlay.classList.toggle('hidden');
-        overlay.classList.toggle('flex');
-      };
-
       const cardNodeArray = characters.map((character) => {
         //CLOSE BUTTON
         const button = document.createElement('button');
@@ -83,13 +83,6 @@ async function buildGrid() {
         miniCard.appendChild(personalInfo);
         miniCard.appendChild(statusAndLocation);
 
-        //ADD LISTENERS
-        button.addEventListener('click', () => {
-          cardCounter--;
-          toggleModal(card, overlay);
-          console.log('Click close');
-        });
-
         return card;
       });
       modalMountNode.append(...cardNodeArray);
@@ -126,23 +119,11 @@ async function buildGrid() {
         // Wrap Img and priceAndTitle
         // <div class="md:flex bg-white rounded-lg p-6">
         const card = document.createElement('div');
-        card.id = `card-${character.id}`;
+        card.id = character.id;
         card.className =
           'cursor-pointer gallery-card flex justify-around items-center bg-gray-800 rounded-lg p-6 hover:bg-gray-600 ';
         card.appendChild(image);
         card.appendChild(nameAndStatus);
-
-        //ADD LISTENER
-        const modalToToggle = document.querySelector(`#modal-${character.id}`);
-        card.addEventListener('click', () => {
-          if (cardCounter > 0) {
-            return;
-          } else if (cardCounter === 0) {
-            cardCounter++;
-            toggleModal(modalToToggle, overlay);
-            console.log('Click open');
-          }
-        });
 
         return card;
       });
@@ -151,3 +132,26 @@ async function buildGrid() {
 }
 
 buildGrid();
+
+// LISTENERS
+mountNode.addEventListener('click', (event) => {
+  const cardIndex = event.path.indexOf(mountNode) - 1;
+  const selectedCardIndex = event.path[cardIndex].id;
+  const modalToToggle = document.querySelector(`#modal-${selectedCardIndex}`);
+
+  if (cardCounter > 0) {
+    return;
+  } else if (cardCounter === 0) {
+    cardCounter++;
+    toggleModal(modalToToggle, overlay);
+    console.log('Click open main node');
+  }
+});
+
+modalMountNode.addEventListener('click', (event) => {
+  const cardIndex = event.path.indexOf(modalMountNode) - 1;
+  const selectedCard = event.path[cardIndex];
+  cardCounter--;
+  toggleModal(selectedCard, overlay);
+  console.log('Click close main node');
+});
