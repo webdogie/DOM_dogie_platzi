@@ -27,6 +27,7 @@ async function buildGrid() {
         //CLOSE BUTTON
         const button = document.createElement('button');
         button.dataset.closeButton = '';
+        button.id = `closeButton-${character.id}`;
         button.innerText = '\u0058'; //ADD and "X"
         button.className =
           'text-gray-200 self-end cursor-pointer border-none outline-none font-bold bg-none ';
@@ -72,10 +73,10 @@ async function buildGrid() {
 
         const card = document.createElement('div');
         card.id = `modal-${character.id}`;
-        card.className = `w-4/6 h-4/6  flex-col items-center bg-gray-700 rounded-lg p-6  transform hidden`;
+        card.className = `w-1/2 h-4/6 flex-col items-center bg-gray-700 rounded-lg p-6  transform hidden`;
 
         const miniCard = document.createElement('div');
-        miniCard.className = 'flex flex-col items-center';
+        miniCard.className = ' w-4/5 flex flex-col items-center';
 
         card.appendChild(button);
         card.appendChild(miniCard);
@@ -97,31 +98,28 @@ async function buildGrid() {
         image.src = `${character.image}`;
 
         // Create heading
-        // <h2 class="text-lg">Erin Lindford</h2>
         const name = document.createElement('h2');
         name.className =
           'char-name text-lg md:text-xl lg:text-2xl text-gray-200';
         name.textContent = character.name;
 
         // Create Price
-        // <div class="text-gray-600">(555) 765-4321</div>
         const status = document.createElement('div');
         status.className = 'char-status text-yellow-200';
         status.textContent = character.status;
 
         // Wrap price & title
-        // <div class="text-center md:textflex bg-white   rounded-lg p-6 hover:bg-gray-600 bg-gray-800-left"><price ><title ></div>
         const nameAndStatus = document.createElement('div');
         nameAndStatus.className = 'text-center md:text-left';
         nameAndStatus.appendChild(name);
         nameAndStatus.appendChild(status);
 
         // Wrap Img and priceAndTitle
-        // <div class="md:flex bg-white rounded-lg p-6">
         const card = document.createElement('div');
+        card.dataset.openButton = '';
         card.id = character.id;
         card.className =
-          'cursor-pointer gallery-card flex justify-around items-center bg-gray-800 rounded-lg p-6 hover:bg-gray-600 ';
+          'cursor-pointer gallery-card flex justify-around items-center bg-gray-800 rounded-lg p-6 hover:bg-gray-600  ';
         card.appendChild(image);
         card.appendChild(nameAndStatus);
 
@@ -135,23 +133,45 @@ buildGrid();
 
 // LISTENERS
 mountNode.addEventListener('click', (event) => {
-  const cardIndex = event.path.indexOf(mountNode) - 1;
-  const selectedCardIndex = event.path[cardIndex].id;
-  const modalToToggle = document.querySelector(`#modal-${selectedCardIndex}`);
-
-  if (cardCounter > 0) {
+  try {
+    if (cardCounter < 1 || event.target.hasAttribute('data-open-button')) {
+      const cardIndex = event.path.indexOf(mountNode) - 1;
+      if (cardIndex > -1) {
+        const selectedCardIndex = event.path[cardIndex].id;
+        const modalToToggle = document.querySelector(
+          `#modal-${selectedCardIndex}`
+        );
+        cardCounter++;
+        toggleModal(modalToToggle, overlay);
+      }
+    }
+  } catch (e) {
     return;
-  } else if (cardCounter === 0) {
-    cardCounter++;
-    toggleModal(modalToToggle, overlay);
-    console.log('Click open main node');
   }
 });
 
 modalMountNode.addEventListener('click', (event) => {
   const cardIndex = event.path.indexOf(modalMountNode) - 1;
   const selectedCard = event.path[cardIndex];
-  cardCounter--;
-  toggleModal(selectedCard, overlay);
-  console.log('Click close main node');
+
+  try {
+    if (event.target.hasAttribute('data-close-button')) {
+      cardCounter--;
+      toggleModal(selectedCard, overlay);
+    }
+  } catch (e) {
+    return;
+  }
 });
+
+// //OVERLAY LISTENER
+//   overlay.addEventListener('click', () => {
+//     console.log(event);
+//     const cardIndex = event.path.indexOf(modalMountNode) - 1;
+//     const selectedCard = event.path[cardIndex];
+//     console.log(cardIndex);
+//     if (cardIndex === 1) {
+//       cardCounter--;
+//       toggleModal(selectedCard, overlay);
+//     }
+//   });

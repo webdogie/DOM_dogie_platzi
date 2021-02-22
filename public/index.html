@@ -21,6 +21,7 @@
       type="text/css"
       href="%PUBLIC_URL%/_dist_/index.css"
     />
+
     <title>Workshop 1: Fetch | Curso Manipulación DOM | Platzi</title>
   </head>
   <body>
@@ -42,7 +43,7 @@
 
         <div
           id="js-modal-mount"
-          class="flex flex-col justify-center items-center fixed z-10"
+          class="fixed flex flex-col items-center z-10 w-full"
         ></div>
 
         <div
@@ -68,8 +69,7 @@
         <a href="https://twitter.com/platzi">@platzi</a>
       </p>
     </footer>
-
     <!-- Add more scripts here -->
-    <script async type="module" src="%PUBLIC_URL%/_dist_/index.js"></script>
+    <script type="module" src="%PUBLIC_URL%/_dist_/index.js" defer></script>
   </body>
 </html>
