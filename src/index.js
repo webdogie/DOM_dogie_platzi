@@ -10,7 +10,9 @@ async function charFecth(url) {
 
 let cardCounter = 0;
 const overlay = document.querySelector('#overlay');
-const toggleModal = (card, overlay) => {
+const toggleModal = (cardMount, card, overlay) => {
+  cardMount.classList.toggle('hidden');
+  cardMount.classList.toggle('flex');
   //TOGGLE MODAL CARD
   card.classList.toggle('hidden');
   card.classList.toggle('flex');
@@ -30,12 +32,14 @@ async function buildGrid() {
         button.id = `closeButton-${character.id}`;
         button.innerText = '\u0058'; //ADD and "X"
         button.className =
-          'text-gray-200 self-end cursor-pointer border-none outline-none font-bold bg-none ';
+          'text-gray-200 self-end cursor-pointer border-none outline-none font-bold bg-none mt-3 w-1/4';
 
         const image = document.createElement('img');
+        image.setAttribute('width', '300');
+        image.setAttribute('height', '300');
         image.loading = 'lazy';
         image.className =
-          'char-pic h-2/5 w-3/4 mb-8 md:h-48 md:w-48 rounded-lg  md:mx-0 md:mr-6';
+          'w-4/5 md:w-3/5 lg:w-1/2 xl:w-3/5 mt-3 mb-8 rounded-lg self-center';
         image.src = `${character.image}`;
 
         //PERSONAL INFO
@@ -48,11 +52,11 @@ async function buildGrid() {
         species.textContent = character.species;
 
         const origin = document.createElement('div');
-        origin.className = 'text-yellow-200';
+        origin.className = 'text-yellow-200 max-w-prose';
         origin.textContent = character.origin.name;
 
         const personalInfo = document.createElement('div');
-        personalInfo.className = 'text-center md:text-left';
+        personalInfo.className = 'flex flex-col m-3 text-left';
         personalInfo.appendChild(name);
         personalInfo.appendChild(species);
         personalInfo.appendChild(origin);
@@ -63,26 +67,32 @@ async function buildGrid() {
         status.textContent = character.status;
 
         const location = document.createElement('div');
-        location.className = 'text-yellow-200';
+        location.className = 'text-yellow-200 max-w-prose';
         location.textContent = character.location.name;
 
         const statusAndLocation = document.createElement('div');
-        statusAndLocation.className = 'text-center md:text-left';
+        statusAndLocation.className = 'flex flex-col m-3 text-left';
         statusAndLocation.appendChild(status);
         statusAndLocation.appendChild(location);
 
+        // Character info wrapper
+        const infoWrapper = document.createElement('div');
+        infoWrapper.appendChild(personalInfo);
+        infoWrapper.appendChild(statusAndLocation);
+        // BIG CARD wrapper
+        const miniCard = document.createElement('div');
+        miniCard.className =
+          'w-4/5 md:w-4/5 flex flex-col items-center xl:flex-row';
+
+        // BIG CARD
         const card = document.createElement('div');
         card.id = `modal-${character.id}`;
-        card.className = `w-1/2 h-4/6 flex-col items-center bg-gray-700 rounded-lg p-6  transform hidden`;
-
-        const miniCard = document.createElement('div');
-        miniCard.className = ' w-4/5 flex flex-col items-center';
+        card.className = `w-3/5 h-4/6 flex-col items-center bg-gray-700 rounded-lg p-1  hidden`;
 
         card.appendChild(button);
         card.appendChild(miniCard);
         miniCard.appendChild(image);
-        miniCard.appendChild(personalInfo);
-        miniCard.appendChild(statusAndLocation);
+        miniCard.appendChild(infoWrapper);
 
         return card;
       });
@@ -92,9 +102,10 @@ async function buildGrid() {
         // Create image node
         // <img class="h-16 w-16 md:h-24 md:w-24 rounded-full mx-auto md:mx-0 md:mr-6" src="avatar.jpg">
         const image = document.createElement('img');
+        image.setAttribute('width', '300');
+        image.setAttribute('height', '300');
         image.loading = 'lazy';
-        image.className =
-          'char-pic  w-2/6 md:w-2/5 rounded-lg  md:mx-0 md:mr-6';
+        image.className = '  w-2/6 md:w-2/5 rounded-lg  md:mx-0 md:mr-6';
         image.src = `${character.image}`;
 
         // Create heading
@@ -142,7 +153,7 @@ mountNode.addEventListener('click', (event) => {
           `#modal-${selectedCardIndex}`
         );
         cardCounter++;
-        toggleModal(modalToToggle, overlay);
+        toggleModal(modalMountNode, modalToToggle, overlay);
       }
     }
   } catch (e) {
@@ -157,7 +168,7 @@ modalMountNode.addEventListener('click', (event) => {
   try {
     if (event.target.hasAttribute('data-close-button')) {
       cardCounter--;
-      toggleModal(selectedCard, overlay);
+      toggleModal(modalMountNode, selectedCard, overlay);
     }
   } catch (e) {
     return;
